@@ -62,6 +62,7 @@
                             <td>
                                <a href="{{ route('todo.delete',$task->id) }}" class="btn btn-danger"><i class="far fa-trash-alt"></i></a>
                                <a href="{{ route('todo.done',$task->id) }}" class="btn btn-success"><i class="fas fa-check-circle"></i></a>
+                               <a href="javascript:void(0)" class="btn btn-info"><i class="fas fa-check-circle"  onclick="taskEditModal({{  $task->id}})"></i></a>
                         </td>
 
                           </tr>
@@ -79,6 +80,20 @@
 
 
     </div>
+    <div class="modal fade" id="taskedit" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="staticBackdropLabel">Main task edit</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="taskeditContent">
+
+            </div>
+
+          </div>
+        </div>
+      </div>
 
 
 
@@ -99,3 +114,28 @@
 
 </style>
 @endpush
+<script>
+    function taskEditModal(task_id){
+        var data ={
+            task_id: task_id,
+
+        };
+        $.ajax({
+              url:"{{ route('todo.edit') }}",
+              headers:{
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+              },
+              type:'GET',
+              dataType:'',
+              data:data,
+              success: function (response){
+
+                $('#taskedit').modal('show');
+
+                $('#taskeditContent').html(response);
+              }
+
+
+        });
+    }
+</script>

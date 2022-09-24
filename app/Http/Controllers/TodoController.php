@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Todo;
 use Illuminate\Http\Request;
 
+
 class TodoController extends Controller
 {
     protected $task;
@@ -43,6 +44,28 @@ class TodoController extends Controller
 
 
     }
+    public function  edit(Request $request)
+    {
+
+       $response['tasks']= $this->task->find($request['task_id']);
+       return view('pages.todo.edit')->with($response);
+
+
+
+    }
+    public function update(array $data,$task_id)
+    {
+        $task=$this->task->find($task_id);
+        
+        $task->title =$data['title'];
+        $task->update();
+
+
+        return redirect()->back();
+
+
+    }
+
 
 
 
